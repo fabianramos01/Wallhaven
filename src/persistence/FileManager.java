@@ -1,12 +1,7 @@
 package persistence;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.InetSocketAddress;
-import java.net.Proxy;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.file.Files;
@@ -14,8 +9,6 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
 import javax.swing.JOptionPane;
-
-import org.w3c.dom.Document;
 
 import controller.ConstantList;
 
