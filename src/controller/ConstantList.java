@@ -4,7 +4,7 @@ import java.awt.Font;
 
 public class ConstantList {
 
-	public static final int WIDTH = 930;
+	public static final int WIDTH = 920;
 	public static final int HEIGHT = 900;
 	public static final String APP = "ImageFilter";
 	public static final String APP_ICON = "/data/appIcon.png";

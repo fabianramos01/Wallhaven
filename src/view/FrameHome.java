@@ -60,7 +60,7 @@ public class FrameHome extends JFrame {
 		panelImage.updateUI();
 		panelImage.setLayout(new GridLayout(images.size()/3, 3));
 		for (String string : images) {
-			panelImage.add(new JLabel(UtilityList.scaledImage(new ImageIcon(string), 100, 100)));
+			panelImage.add(new JLabel(UtilityList.scaledImage(new ImageIcon(string), 460, 460)));
 		}
 		revalidate();
 	}
