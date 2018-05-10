@@ -1,5 +1,11 @@
 package persistence;
 
+import java.awt.Color;
+import java.awt.image.BufferedImage;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -7,14 +13,18 @@ import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
 
+import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 
 import controller.ConstantList;
 
 public class FileManager {
 
-	public static void loadImages(String image) throws IOException {
+	public static void downloadFile(String image) throws IOException {
 		URLConnection website = new URL(ConstantList.WEB_INIT_PATH + image + ConstantList.WEB_END_PATH)
 				.openConnection();
 		website.addRequestProperty("User-Agent",
@@ -24,10 +34,57 @@ public class FileManager {
 		}
 	}
 
+	public static void loadImages() throws IOException {
+		List<String> lines = Files.readAllLines(Paths.get(ConstantList.FILE_PATH));
+		String line = "";
+		int count = 0;
+		StringTokenizer st = new StringTokenizer(lines.get(0), "\"");
+		while (st.hasMoreTokens()) {
+			if ((line = st.nextToken()).contains(ConstantList.EXTENSION)) {
+				writeImg(line,
+						new FileOutputStream(new File(ConstantList.FILE_IMG_PATH + count + ConstantList.EXTENSION)));
+				count++;
+			}
+		}
+	}
+
+	private static void writeImg(String img, FileOutputStream out) throws IOException {
+		URLConnection image = new URL(img).openConnection();
+		image.addRequestProperty("User-Agent",
+				"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:25.0) Gecko/20100101 Firefox/25.0");
+		InputStream in = image.getInputStream();
+		int c;
+		while ((c = in.read()) != -1) {
+			out.write(c);
+		}
+		in.close();
+		out.close();
+	}
+
+	public static void imageFilter() throws IOException {
+		File[] imgFiles = new File(ConstantList.FILE_IMG_PATH).listFiles();
+		for (File file : imgFiles) {
+			addFilter(file, ImageIO.read(file));
+		}
+	}
+
+	private static void addFilter(File file, BufferedImage buffImage) throws IOException {
+		for (int i = 0; i < buffImage.getWidth(); i++) {
+			for (int j = 0; j < buffImage.getHeight(); j++) {
+				Color c1=new Color(buffImage.getRGB(i, j));
+                int med=(c1.getRed()+c1.getGreen()+c1.getBlue())/3;
+                buffImage.setRGB(i, j, new Color(med,med,med).getRGB());
+			}
+		}
+		ImageIO.write(buffImage, "jpg", new File(ConstantList.FILE_IMG_PATH_F + file.getName()));
+	}
+
 	public static void main(String[] args) {
 		String image = JOptionPane.showInputDialog("Ingrese el nombre de la imagen");
 		try {
-			loadImages(image);
+			downloadFile(image);
+			loadImages();
+			imageFilter();
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 		}
