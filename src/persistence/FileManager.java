@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.Proxy;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.file.Files;
@@ -33,15 +32,15 @@ public class FileManager {
 	}
 
 	public static void loadImages() throws IOException {
-		Pattern pattern = Pattern.compile("(https://alpha\\.wallhaven\\.cc/wallpaper/)(\\d+)");
+		Pattern pattern = Pattern.compile("(https://alpha\\.wallhaven\\.cc/wallpapers/thumb/small/th-)(\\d+)");
 		Matcher matcher = pattern.matcher(Files.readAllLines(Paths.get(ConstantList.FILE_PATH)).get(0));
 		HashSet<String> images = new HashSet<>();
 		while (matcher.find()) {
-			images.add(ConstantList.URL_IMG + matcher.group(2) + ConstantList.EXTENSION_JPG);
+			images.add(matcher.group(1) + matcher.group(2) + ConstantList.EXTENSION_JPG);
 		}
 		int count = 0;
 		for (String string : images) {
-			if (3 <= count) {
+			if (1 <= count) {
 				break;
 			}
 			writeImg(string,

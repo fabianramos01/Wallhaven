@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
-import javax.swing.Timer;
+import javax.swing.SwingWorker;
 
 import persistence.FileManager;
 import view.FrameHome;
@@ -16,24 +16,23 @@ import view.FrameHome;
 public class Controller implements ActionListener {
 
 	private FrameHome frameHome;
-	private Timer timer;
 	private long time;
 	private File copy;
+	private File original;
 
 	public Controller() {
 		frameHome = new FrameHome(this);
-		createTimer();
 	}
 
 	private void init() {
 		time = System.currentTimeMillis();
 		copy = new File(ConstantList.FILE_IMG_PATH_F);
-		timer.start();
+		original = new File(ConstantList.FILE_IMG_PATH);
+//		worker();
 		try {
 			FileManager.downloadFile(frameHome.getSearch());
 			FileManager.loadImages();
 			imageFilter();
-			timer.stop();
 			JOptionPane.showMessageDialog(null, "Tiempo transcurrido: " + (System.currentTimeMillis()-time)/1000 + "seg");
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -52,19 +51,19 @@ public class Controller implements ActionListener {
 		}
 		frameHome.loadImages(images);
 	}
-
-	private void createTimer() {
-		timer = new Timer(ConstantList.TIME_REFRESH, new ActionListener() {
-
+	
+	private void worker() {
+		SwingWorker<Void, Void> swingWorker = new SwingWorker<Void, Void>() {
+			
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				time++;
-				frameHome.refreshProgress(copy.list().length, 23);
-				if (24 == copy.list().length) {
-					timer.stop();
+			protected Void doInBackground() throws Exception {
+				while (true) {
+					frameHome.refreshProgress(copy.list().length + original.list().length, 4);
+					Thread.sleep(100);
 				}
 			}
-		});
+		};
+		swingWorker.run();
 	}
 
 	@Override
