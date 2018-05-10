@@ -2,10 +2,8 @@ package persistence;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -13,12 +11,10 @@ import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
 import javax.imageio.ImageIO;
-import javax.swing.JOptionPane;
 
 import controller.ConstantList;
 
@@ -61,14 +57,7 @@ public class FileManager {
 		out.close();
 	}
 
-	public static void imageFilter() throws IOException {
-		File[] imgFiles = new File(ConstantList.FILE_IMG_PATH).listFiles();
-		for (File file : imgFiles) {
-			addFilter(file, ImageIO.read(file));
-		}
-	}
-
-	private static void addFilter(File file, BufferedImage buffImage) throws IOException {
+	public static void addFilter(File file, BufferedImage buffImage) throws IOException {
 		for (int i = 0; i < buffImage.getWidth(); i++) {
 			for (int j = 0; j < buffImage.getHeight(); j++) {
 				Color c1=new Color(buffImage.getRGB(i, j));
@@ -77,16 +66,5 @@ public class FileManager {
 			}
 		}
 		ImageIO.write(buffImage, "jpg", new File(ConstantList.FILE_IMG_PATH_F + file.getName()));
-	}
-
-	public static void main(String[] args) {
-		String image = JOptionPane.showInputDialog("Ingrese el nombre de la imagen");
-		try {
-			downloadFile(image);
-			loadImages();
-			imageFilter();
-		} catch (IOException e) {
-			System.out.println(e.getMessage());
-		}
 	}
 }

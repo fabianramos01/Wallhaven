@@ -1,6 +1,14 @@
 package controller;
 
+import java.awt.Font;
+
 public class ConstantList {
+
+	public static final int WIDTH = 938;
+	public static final int HEIGHT = 900;
+	public static final String APP = "ImageFilter";
+	public static final String APP_ICON = "/data/appIcon.png";
+	public static final Font AGENCY_FB = new Font("Agency FB", Font.BOLD, 30);
 
 	public static final String WEB_INIT_PATH = "https://alpha.wallhaven.cc/search?q=";
 	public static final String WEB_END_PATH = "&search_image=";
@@ -8,4 +16,6 @@ public class ConstantList {
 	public static final String EXTENSION = ".jpg";
 	public static final String FILE_IMG_PATH = "images/";
 	public static final String FILE_IMG_PATH_F = "imagesWFilter/";
+
+	public static final String SEARCH = "Busqueda";
 }
