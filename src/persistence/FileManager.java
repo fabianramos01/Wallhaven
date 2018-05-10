@@ -57,14 +57,14 @@ public class FileManager {
 		out.close();
 	}
 
-	public static void addFilter(File file, BufferedImage buffImage) throws IOException {
+	public static void addFilter(String name, BufferedImage buffImage) throws IOException {
 		for (int i = 0; i < buffImage.getWidth(); i++) {
 			for (int j = 0; j < buffImage.getHeight(); j++) {
-				Color c1=new Color(buffImage.getRGB(i, j));
-                int med=(c1.getRed()+c1.getGreen()+c1.getBlue())/3;
-                buffImage.setRGB(i, j, new Color(med,med,med).getRGB());
+				Color pixel = new Color(buffImage.getRGB(i, j));
+				int newPixel = (pixel.getRed() + pixel.getGreen() + pixel.getBlue()) / 3;
+				buffImage.setRGB(i, j, new Color(newPixel, newPixel, newPixel).getRGB());
 			}
 		}
-		ImageIO.write(buffImage, "jpg", new File(ConstantList.FILE_IMG_PATH_F + file.getName()));
+		ImageIO.write(buffImage, "jpg", new File(ConstantList.FILE_IMG_PATH_F + name));
 	}
 }

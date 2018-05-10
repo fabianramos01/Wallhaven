@@ -4,7 +4,7 @@ import java.awt.Font;
 
 public class ConstantList {
 
-	public static final int WIDTH = 938;
+	public static final int WIDTH = 930;
 	public static final int HEIGHT = 900;
 	public static final String APP = "ImageFilter";
 	public static final String APP_ICON = "/data/appIcon.png";
@@ -19,5 +19,5 @@ public class ConstantList {
 
 	public static final String SEARCH = "Busqueda";
 	public static final int MAX_PROGRESS = 100;
-	public static final int TIME_REFRESH = 1;
+	public static final int TIME_REFRESH = 500;
 }

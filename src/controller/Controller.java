@@ -42,7 +42,7 @@ public class Controller implements ActionListener {
 	private void imageFilter() throws IOException {
 		File[] imgFiles = new File(ConstantList.FILE_IMG_PATH).listFiles();
 		for (File file : imgFiles) {
-			FileManager.addFilter(file, ImageIO.read(file));
+			FileManager.addFilter(file.getName(), ImageIO.read(file));
 		}
 		ArrayList<String> images = new ArrayList<>();
 		imgFiles = new File(ConstantList.FILE_IMG_PATH_F).listFiles();
