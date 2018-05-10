@@ -33,6 +33,7 @@ public class FrameHome extends JFrame {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(new BorderLayout());
 		init(listener);
+		setResizable(false);
 		setVisible(true);
 	}
 
@@ -48,6 +49,9 @@ public class FrameHome extends JFrame {
 		panelImage = new JPanel();
 		add(new JScrollPane(panelImage), BorderLayout.CENTER);
 		progressBar = new JProgressBar();
+		progressBar.setStringPainted(true);
+		progressBar.setMaximum(ConstantList.MAX_PROGRESS);
+		progressBar.setFont(ConstantList.AGENCY_FB);
 		add(progressBar, BorderLayout.SOUTH);
 	}
 	
@@ -59,6 +63,10 @@ public class FrameHome extends JFrame {
 			panelImage.add(new JLabel(new ImageIcon(string)));
 		}
 		revalidate();
+	}
+	
+	public void refreshProgress(int value, int all) {
+		progressBar.setValue(value*100/all);
 	}
 
 	public String getSearch() {

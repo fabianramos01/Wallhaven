@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
+import javax.swing.Timer;
 
 import persistence.FileManager;
 import view.FrameHome;
@@ -14,12 +16,18 @@ import view.FrameHome;
 public class Controller implements ActionListener {
 
 	private FrameHome frameHome;
-	
+	private Timer timer;
+	private int time;
+	private File copy;
+
 	public Controller() {
 		frameHome = new FrameHome(this);
+		createTimer();
 	}
-	
+
 	private void init() {
+		copy = new File(ConstantList.FILE_IMG_PATH_F);
+		timer.start();
 		try {
 			FileManager.downloadFile(frameHome.getSearch());
 			FileManager.loadImages();
@@ -27,6 +35,8 @@ public class Controller implements ActionListener {
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 		}
+		timer.stop();
+		JOptionPane.showMessageDialog(null, "Tiempo transcurrido: " + time + "seg");
 	}
 
 	private void imageFilter() throws IOException {
@@ -41,9 +51,20 @@ public class Controller implements ActionListener {
 		}
 		frameHome.loadImages(images);
 	}
-	
-	public static void main(String[] args) {
-		new Controller();
+
+	private void createTimer() {
+		timer = new Timer(ConstantList.TIME_REFRESH, new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("------------------");
+				time++;
+				frameHome.refreshProgress(copy.list().length, 23);
+				if (24 == copy.list().length) {
+					timer.stop();
+				}
+			}
+		});
 	}
 
 	@Override
@@ -53,6 +74,9 @@ public class Controller implements ActionListener {
 			init();
 			break;
 		}
-		
+	}
+
+	public static void main(String[] args) {
+		new Controller();
 	}
 }

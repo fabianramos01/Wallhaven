@@ -18,4 +18,6 @@ public class ConstantList {
 	public static final String FILE_IMG_PATH_F = "imagesWFilter/";
 
 	public static final String SEARCH = "Busqueda";
+	public static final int MAX_PROGRESS = 100;
+	public static final int TIME_REFRESH = 1;
 }
