@@ -11,8 +11,9 @@ import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.List;
-import java.util.StringTokenizer;
+import java.util.HashSet;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
 
@@ -31,16 +32,18 @@ public class FileManager {
 	}
 
 	public static void loadImages() throws IOException {
-		List<String> lines = Files.readAllLines(Paths.get(ConstantList.FILE_PATH));
-		String line = "";
+		Pattern pattern = Pattern.compile("(https://alpha\\.wallhaven\\.cc/wallpaper/)(\\d+)");
+		Matcher matcher = pattern.matcher(Files.readAllLines(Paths.get(ConstantList.FILE_PATH)).get(0));
+		HashSet<String> images = new HashSet<>();
+		while (matcher.find()) {
+			images.add(ConstantList.URL_IMG + matcher.group(2) + ConstantList.EXTENSION_JPG);
+		}
 		int count = 0;
-		StringTokenizer st = new StringTokenizer(lines.get(0), "\"");
-		while (st.hasMoreTokens()) {
-			if ((line = st.nextToken()).contains(ConstantList.EXTENSION)) {
-				writeImg(line,
-						new FileOutputStream(new File(ConstantList.FILE_IMG_PATH + count + ConstantList.EXTENSION)));
-				count++;
-			}
+		for (String string : images) {
+			writeImg(string,
+					new FileOutputStream(new File(ConstantList.FILE_IMG_PATH + count + ConstantList.EXTENSION_JPG)));
+			System.out.println(string);
+			count++;
 		}
 	}
 

@@ -60,7 +60,7 @@ public class FrameHome extends JFrame {
 		panelImage.updateUI();
 		panelImage.setLayout(new GridLayout(images.size()/3, 3));
 		for (String string : images) {
-			panelImage.add(new JLabel(new ImageIcon(string)));
+			panelImage.add(new JLabel(UtilityList.scaledImage(new ImageIcon(string), 100, 100)));
 		}
 		revalidate();
 	}
@@ -70,6 +70,6 @@ public class FrameHome extends JFrame {
 	}
 
 	public String getSearch() {
-		return textField.getText();
+		return textField.getText().replace(' ', '+');
 	}
 }

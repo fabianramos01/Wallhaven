@@ -17,7 +17,7 @@ public class Controller implements ActionListener {
 
 	private FrameHome frameHome;
 	private Timer timer;
-	private int time;
+	private long time;
 	private File copy;
 
 	public Controller() {
@@ -26,17 +26,18 @@ public class Controller implements ActionListener {
 	}
 
 	private void init() {
+		time = System.currentTimeMillis();
 		copy = new File(ConstantList.FILE_IMG_PATH_F);
 		timer.start();
 		try {
 			FileManager.downloadFile(frameHome.getSearch());
 			FileManager.loadImages();
 			imageFilter();
+			timer.stop();
+			JOptionPane.showMessageDialog(null, "Tiempo transcurrido: " + (System.currentTimeMillis()-time)/1000 + "seg");
 		} catch (IOException e) {
-			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
-		timer.stop();
-		JOptionPane.showMessageDialog(null, "Tiempo transcurrido: " + time + "seg");
 	}
 
 	private void imageFilter() throws IOException {
