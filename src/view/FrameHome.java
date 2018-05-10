@@ -54,19 +54,20 @@ public class FrameHome extends JFrame {
 		progressBar.setFont(ConstantList.AGENCY_FB);
 		add(progressBar, BorderLayout.SOUTH);
 	}
-	
+
 	public void loadImages(ArrayList<String> images) {
 		panelImage.removeAll();
 		panelImage.updateUI();
-		panelImage.setLayout(new GridLayout(images.size()/3, 3));
+		panelImage.setLayout(new GridLayout(images.size() / 3, 3));
 		for (String string : images) {
-			panelImage.add(new JLabel(UtilityList.scaledImage(new ImageIcon(string), 460, 460)));
+			panelImage.add(new JLabel(
+					UtilityList.scaledImage(new ImageIcon(string), ConstantList.IMG_SIZE, ConstantList.IMG_SIZE)));
 		}
 		revalidate();
 	}
-	
+
 	public void refreshProgress(int value, int all) {
-		progressBar.setValue(value*100/all);
+		progressBar.setValue(value * 100 / all);
 	}
 
 	public String getSearch() {

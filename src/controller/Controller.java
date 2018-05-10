@@ -58,7 +58,6 @@ public class Controller implements ActionListener {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("------------------");
 				time++;
 				frameHome.refreshProgress(copy.list().length, 23);
 				if (24 == copy.list().length) {

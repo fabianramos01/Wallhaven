@@ -1,10 +1,12 @@
 package controller;
 
 import java.awt.Font;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 
 public class ConstantList {
 
-	public static final int WIDTH = 920;
+	public static final int WIDTH = 1000;
 	public static final int HEIGHT = 900;
 	public static final String APP = "ImageFilter";
 	public static final String APP_ICON = "/data/appIcon.png";
@@ -22,4 +24,7 @@ public class ConstantList {
 	public static final String URL_IMG = "https://alpha.wallhaven.cc/wallpapers/full/wallhaven-";
 	public static final int MAX_PROGRESS = 100;
 	public static final int TIME_REFRESH = 500;
+	public static final int IMG_SIZE = 366;
+	
+	public static final Proxy PROXY = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("172.16.0.73", 8080));
 }
