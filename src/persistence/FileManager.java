@@ -23,7 +23,7 @@ public class FileManager {
 
 	public static void downloadFile(String image) throws IOException {
 		URLConnection website = new URL(ConstantList.WEB_INIT_PATH + image + ConstantList.WEB_END_PATH)
-				.openConnection(ConstantList.PROXY);
+				.openConnection();
 		website.addRequestProperty("User-Agent",
 				"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:25.0) Gecko/20100101 Firefox/25.0");
 		try (InputStream in = website.getInputStream()) {
@@ -31,27 +31,18 @@ public class FileManager {
 		}
 	}
 
-	public static void loadImages() throws IOException {
+	public static HashSet<String> getImagesURL() throws IOException {
 		Pattern pattern = Pattern.compile("(https://alpha\\.wallhaven\\.cc/wallpapers/thumb/small/th-)(\\d+)");
 		Matcher matcher = pattern.matcher(Files.readAllLines(Paths.get(ConstantList.FILE_PATH)).get(0));
 		HashSet<String> images = new HashSet<>();
 		while (matcher.find()) {
 			images.add(matcher.group(1) + matcher.group(2) + ConstantList.EXTENSION_JPG);
 		}
-		int count = 0;
-		for (String string : images) {
-			if (1 <= count) {
-				break;
-			}
-			writeImg(string,
-					new FileOutputStream(new File(ConstantList.FILE_IMG_PATH + count + ConstantList.EXTENSION_JPG)));
-			System.out.println(string);
-			count++;
-		}
+		return images;
 	}
 
-	private static void writeImg(String img, FileOutputStream out) throws IOException {
-		URLConnection image = new URL(img).openConnection(ConstantList.PROXY);
+	public static void writeImg(String img, FileOutputStream out) throws IOException {
+		URLConnection image = new URL(img).openConnection();
 		image.addRequestProperty("User-Agent",
 				"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:25.0) Gecko/20100101 Firefox/25.0");
 		InputStream in = image.getInputStream();

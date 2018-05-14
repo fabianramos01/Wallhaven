@@ -22,7 +22,7 @@ public class ConstantList {
 
 	public static final String SEARCH = "Busqueda";
 	public static final String URL_IMG = "https://alpha.wallhaven.cc/wallpapers/full/wallhaven-";
-	public static final int MAX_PROGRESS = 100;
+	public static final int MAX_PROGRESS = 48;
 	public static final int TIME_REFRESH = 500;
 	public static final int IMG_SIZE = 366;
 	

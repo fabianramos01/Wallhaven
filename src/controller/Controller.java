@@ -3,12 +3,12 @@ package controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
-import javax.swing.SwingWorker;
 
 import persistence.FileManager;
 import view.FrameHome;
@@ -17,53 +17,44 @@ public class Controller implements ActionListener {
 
 	private FrameHome frameHome;
 	private long time;
-	private File copy;
-	private File original;
 
 	public Controller() {
+		new File(ConstantList.FILE_IMG_PATH).mkdir();
+		new File(ConstantList.FILE_IMG_PATH_F).mkdir();
 		frameHome = new FrameHome(this);
 	}
 
 	private void init() {
 		time = System.currentTimeMillis();
-		copy = new File(ConstantList.FILE_IMG_PATH_F);
-		original = new File(ConstantList.FILE_IMG_PATH);
-//		worker();
 		try {
 			FileManager.downloadFile(frameHome.getSearch());
-			FileManager.loadImages();
-			imageFilter();
-			JOptionPane.showMessageDialog(null, "Tiempo transcurrido: " + (System.currentTimeMillis()-time)/1000 + "seg");
+			int count = 0;
+			int files = 0;
+			frameHome.refreshProgress(files);
+			for (String image : FileManager.getImagesURL()) {
+				FileManager.writeImg(image, new FileOutputStream(
+						new File(ConstantList.FILE_IMG_PATH + count + ConstantList.EXTENSION_JPG)));
+				frameHome.refreshProgress(++files);
+				FileManager.addFilter(String.valueOf(count),
+						ImageIO.read(new File(ConstantList.FILE_IMG_PATH + count + ConstantList.EXTENSION_JPG)));
+				frameHome.refreshProgress(++files);
+				count++;
+			}
+			paintImages();
+			JOptionPane.showMessageDialog(null,
+					"Tiempo transcurrido: " + (System.currentTimeMillis() - time) / 1000 + "seg");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	private void imageFilter() throws IOException {
-		File[] imgFiles = new File(ConstantList.FILE_IMG_PATH).listFiles();
-		for (File file : imgFiles) {
-			FileManager.addFilter(file.getName(), ImageIO.read(file));
-		}
+	private void paintImages() throws IOException {
 		ArrayList<String> images = new ArrayList<>();
-		imgFiles = new File(ConstantList.FILE_IMG_PATH_F).listFiles();
+		File[] imgFiles = new File(ConstantList.FILE_IMG_PATH_F).listFiles();
 		for (File files : imgFiles) {
 			images.add(files.getAbsolutePath());
 		}
 		frameHome.loadImages(images);
-	}
-	
-	private void worker() {
-		SwingWorker<Void, Void> swingWorker = new SwingWorker<Void, Void>() {
-			
-			@Override
-			protected Void doInBackground() throws Exception {
-				while (true) {
-					frameHome.refreshProgress(copy.list().length + original.list().length, 4);
-					Thread.sleep(100);
-				}
-			}
-		};
-		swingWorker.run();
 	}
 
 	@Override
